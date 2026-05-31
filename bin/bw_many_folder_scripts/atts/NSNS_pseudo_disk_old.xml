@@ -4,7 +4,7 @@
     <Field name="skewFactor" type="double">1</Field>
     <Field name="limitsMode" type="string">OriginalData</Field>
     <Field name="minFlag" type="bool">true</Field>
-    <Field name="min" type="double">-3.25</Field>
+    <Field name="min" type="double">-3</Field>
     <Field name="useBelowMinColor" type="bool">false</Field>
     <Object name="belowMinColor">
         <Object name="ColorAttribute">
@@ -24,7 +24,7 @@
     <Field name="invertColorTable" type="bool">false</Field>
     <Field name="opacityType" type="string">Constant</Field>
     <Field name="opacityVariable" type="string"></Field>
-    <Field name="opacity" type="double">0.1277777777777</Field>
+    <Field name="opacity" type="double">0.05</Field>
     <Field name="opacityVarMin" type="double">0</Field>
     <Field name="opacityVarMax" type="double">1</Field>
     <Field name="opacityVarMinFlag" type="bool">false</Field>
@@ -57,7 +57,7 @@
     <Field name="renderWireframe" type="int">0</Field>
     <Field name="renderPoints" type="int">0</Field>
     <Field name="smoothingLevel" type="int">2</Field>
-    <Field name="legendFlag" type="bool">false</Field>
+    <Field name="legendFlag" type="bool">true</Field>
     <Field name="lightingFlag" type="bool">true</Field>
     <Object name="wireframeColor">
         <Object name="ColorAttribute">
