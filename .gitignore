@@ -1,7 +1,0 @@
-# Feel free to add more patterns to ignore, like compressed or log files
-
-.DS_Store
-**/.DS_Store
-
-# compressed file of dir gravity_wave_generation
-gravity_wave_generation.zip
