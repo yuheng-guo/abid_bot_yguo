@@ -3,11 +3,9 @@
 if [[ -z $root ]]; then echo error: No root. Aborting. >&2; exit 1; fi
 
 ############################# Parameters
-zoom_flag=0
-
-
+zoom_flag=1
 fly_over_flag=0
-fly_around_flag=1
+fly_around_flag=0
 
 
 #plotting varibles
@@ -19,8 +17,8 @@ PlotSpinVec=1 # Plot spin vector
 PlotBsq2rAsVol=0 # Plot B squared over 2 rho in a volume plot
 PlotBsq2rAsIso=0 # Plot B squared over 2 rho in a pseudocolor plot as isosurfaces
 Plotg00=0 # Plot g00 from metric
-refPlot=1 # Reflect plot over xylplane
-cutPlot=1 # only show back half (y>0), needs view like: (0,-x,y)
+refPlot=0 # Reflect plot over xylplane
+cutPlot=0 # only show back half (y>0), needs view like: (0,-x,y)
 bgcolor="blue" #background color
 
 PlotVelCustom=0
@@ -34,9 +32,9 @@ attsdir=$root/bin/bw_many_folder_scripts/atts
 
 
 ############################# zoom #############################
-jobName=12_3_zoom_cut_folder15_idx15
-h5folder=3d_data_25_11_01_051428
-idx=15
+jobName=bhdisk_sol05_zoomout-to-zoomin
+h5folder=3d_data_26_01_03_190031
+idx=1
 totframes=100
 pyscript=run.py
 

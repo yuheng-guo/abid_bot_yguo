@@ -36,7 +36,7 @@ def generate_line(center, length, direction, npts, filename):
     p.parent.mkdir(parents=True, exist_ok=True)
 
     with open(p, "w") as f:
-        f.write("x y z c\n")
+        f.write("x y z test\n")
         for (x, y, z) in pts:
             f.write(f"{x:.6f} {y:.6f} {z:.6f} {100}\n")
 
@@ -46,8 +46,8 @@ def generate_line(center, length, direction, npts, filename):
 
 if __name__ == "__main__":
     # Example: line of length 5, pointing along (1,1,0)
-    generate_line(center=(0.3,0,0.1),
-                  length=0.25, #0.5
-                  direction=(0,0,1),
+    generate_line(center=(0,0,0),
+                  length=1, #0.5
+                  direction=(1,0,0),
                   npts=500,
                   filename="line.3d")

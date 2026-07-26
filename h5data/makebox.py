@@ -1,4 +1,3 @@
-```
 import numpy as np
 from pathlib import Path
 
@@ -58,7 +57,7 @@ def generate_box_outline(center, size, npts, angle_deg, filename):
     p = Path(filename)
     p.parent.mkdir(parents=True, exist_ok=True)
     with open(p, "w") as f:
-        f.write("x y z c\n")
+        f.write("x y z test\n")
         for (x, y, z) in pts:
             f.write(f"{x:.6f} {y:.6f} {z:.6f} {100}\n")
 
@@ -68,6 +67,5 @@ def generate_box_outline(center, size, npts, angle_deg, filename):
 
 if __name__ == "__main__":
     # Example usage
-    generate_box_outline(center=(0, 0, 0), size=(2, 2, 1), npts=1000,
+    generate_box_outline(center=(0, 0, 0), size=(7, 7, 5), npts=3000,
                          angle_deg=20, filename="box.3d")
-```

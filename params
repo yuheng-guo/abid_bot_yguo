@@ -5,7 +5,7 @@
 module load python
 
 # root:			The full path to abid_bot (so it should end with abid_bot) 
-root="/anvil/scratch/x-colson1/abid_bot_sol_01_v2"
+root="/anvil/scratch/x-yguo11/bhdisk_sol_05"
 
 #gwdir:
 gwdir=$root/bin/gw_code
@@ -27,7 +27,7 @@ dt="0.1097556941"
 firstTime="00000.00000000000"
 
 # M: 			The ADM mass
-M="0.0502637561418947"
+M="0.0603349020955639"
 
 # offset: 		Take the value of "firstTime" and divide it by "dt" the result should be an 
 #			integer, and that is the offset. Alternatively, you can look at the very 
@@ -45,7 +45,7 @@ numStars=1
 #			variable is used in "run_many_movie_rankes.py" when defining the logrho 
 #			variable: 
 #			DefineScalarExpression("logrha","log10(<MHD_EVOLVE--rho_b>/"+max_density+")")
-maxdensity="0.000000012745072283"
+maxdensity="0.000461833107670726"
 
 # time_offset:		This parameter is rarely nonzero. time_offset is described by the following 
 #			relation
@@ -65,14 +65,14 @@ vol2XML=$root/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
 # rho_pseudoXML:	These files are used for when you'd prefer plotting the stars with
 # rho_isoXML:		Pseudocolor plots with isosurfaces instead of the usual volume plot with
 #			ray-casting. This saves time and resources at the cost of details and realism
-rho_pseudoXML=$root/bin/bw_many_folder_scripts/atts/NSNS_pseudo_disk.xml
+rho_pseudoXML=$root/bin/bw_many_folder_scripts/atts/NSNS_pseudo_disk_diskGW.xml
 rho_isoXML=$root/bin/bw_many_folder_scripts/atts/bhdisk_iso_21_shells.xml
 #rho_pseudoXML=$root/bin/bw_many_folder_scripts/atts/bsq2r_pseudo_test.xml
 #rho_isoXML=$root/bin/bw_many_folder_scripts/atts/bsq2r_iso_test.xml
 # view1XML:		The full path to the view attribute xml file. This is usually placed in 
 # view2XML:		"bin/bw_many_folder_scripts/atts/".
-view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_equatorial.xml #bhdisk_view_30deg_zoomin.xml #bhdisk_view_equatorial.xml
-view2XML=$root/bin/bw_many_folder_scripts/atts/zoom2.xml
+view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_30deg.xml #bhdisk_view_30deg_zoomin.xml #bhdisk_view_equatorial.xml
+view2XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_reg.xml
 #####################################################################
 
 

@@ -280,6 +280,7 @@ def setSave(saveFolder): #sets saveattributes
         s.format = s.PNG
         s.outputToCurrentDirectory = 1
         s.fileName = saveFolder
+        s.SetPixelData(2) # Transparent background
 
         s.width = 1920
         s.height = 1080
@@ -408,10 +409,10 @@ def PlotBH(database, idx, indx, ref=1):
 
         SetPlotOptions(Pseudo)
 
-plot_box = True
+plot_box = False
 def PlotBox():
         # Hardcoded path to your .3d file
-        file_path = "/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/line.3d" #"/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/cube_edges.3d"
+        file_path = "/anvil/scratch/x-yguo11/bhdisk_sol_05/h5data/line.3d" #"/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/cube_edges.3d"
 
         # Open the database
         ActivateDatabase(file_path)
@@ -978,9 +979,9 @@ class VisitPlot:
                 print("Loading state {}".format(state))
                 SetTimeSliderState(frame) #if statelist is [3,4,5], frame=3(h5data) and state=0(xml list).
                 tcur = self.timeTXT[state][5:-4]
-                print("t/M = {}".format(int(float(tcur))))
+                print("t/M = {}".format(int(float(tcur)))) # comment out to remove t/M
                 self.txt.text = "t/M = {}".format(int(float(tcur)))
-                #self.txt.text = ""
+                self.txt.text = ""
 
                 self.LoadAttr(view, "myView")
 
@@ -1052,14 +1053,16 @@ class VisitPlot:
                         SetActivePlots(self.idx("density"))
                         SetPlotOptions(self.rho_atts)
                         iso(self.rho_isoXML)
-                        reflect()
+                        if self.cutPlot:   # reflect() only in cut mode; in nocut it doubles the
+                            reflect()      # full 21-shell surface and overflows/crashes the VisIt engine
                         print("pseudocolor set")
-                        if self.cutPlot: 
+                        if self.cutPlot:
                             #pass
                             #box(self.CoM_y, forceAddOp or frame==self.firstFrame)
                             #clip(self.CoM, self.myView.viewNormal, forceAddOp or frame==self.firstFrame)
                             print('Current View Normal for Clip Operator:', self.myView.viewNormal)
-                            clip(self.CoM, (0.0, -1.0, 0.0), forceAddOp or frame==self.firstFrame)
+                            # clip(self.CoM, (0.0, -1.0, 0.0), forceAddOp or frame==self.firstFrame)
+                            clip(self.CoM, (0.0, 0.0, 1.0), forceAddOp or frame==self.firstFrame)
                 if self.bsq2r():
                         SetActivePlots(self.idx("bsq2r"))
                         SetPlotOptions(self.bsq_atts)

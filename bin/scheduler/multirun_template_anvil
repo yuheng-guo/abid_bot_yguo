@@ -1,9 +1,10 @@
 #!/bin/bash
-#SBATCH -p wholenode
+#SBATCH -p shared
 #SBATCH -N 1
-#SBATCH -n 128
+#SBATCH -n 1
+#SBATCH --mem=32G
 #SBATCH --export=ALL
-#SBATCH -t 02:00:00
+#SBATCH -t 03:00:00
 cd $PBS_O_WORKDIR
 . ${MODULESHOME}/init/bash
 #module load hdf5

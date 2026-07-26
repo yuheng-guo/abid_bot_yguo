@@ -2,3 +2,9 @@
 # two lines of folder_paths where gap occurs
 # iteration_end folder_path_1
 # iteration_begin folder_path_2
+293888 /anvil/scratch/x-yguo11/bhdisk_sol_05/h5data/3d_data_26_01_01_202312/
+295424 /anvil/scratch/x-yguo11/bhdisk_sol_05/h5data/3d_data_26_01_02_175921/
+
+2150400 /anvil/scratch/x-yguo11/bhdisk_sol_05/h5data/3d_data_26_06_06_061835/
+2399232 /anvil/scratch/x-yguo11/bhdisk_sol_05/h5data/3d_data_26_07_08_231351/
+
