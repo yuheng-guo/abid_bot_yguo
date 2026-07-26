@@ -9,12 +9,12 @@ fi
 #option to reduce number of folders images
 all=false                      #Runs all folders if true, if false will run from
 firstFolder=1         #       firstFolder to lastFolder. 
-lastFolder=1       #      folder numbers are 1-indexed, so starts at 1
-framesPerRun=5   
+lastFolder=174       #      folder numbers are 1-indexed, so starts at 1
+framesPerRun=15
 
 
 
-jobName=start_cut
+jobName=bhdisk_sol32_gw_disk_composite
 h5dir=$root/h5data
 extrasDir=$root/xml$1
 h5prefix=3d_data_
@@ -44,8 +44,8 @@ PlotSpinPlane=0 # plot plane perpendicular to spin vector
 PlotBsq2rAsVol=0 # Plot B squared over 2 rho in a volume plot
 PlotBsq2rAsIso=0 # Plot B squared over 2 rho in a pseudocolor plot as isosurfaces
 Plotg00=0 # Plot g00 from metric
-refPlot=1 # Reflect plot over xy plane
-cutPlot=1 # only show back half (y>0), needs view like: (0,-x,y)
+refPlot=0 # Reflect plot over xy plane
+cutPlot=0 # only show back half (y>0), needs view like: (0,-x,y)
 bgcolor="blue" #background color
 
 

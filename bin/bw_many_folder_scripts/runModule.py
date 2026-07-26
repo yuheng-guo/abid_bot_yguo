@@ -278,6 +278,7 @@ def setAnnotations(lightlist=[]):#sets background, sets up text
 def setSave(saveFolder): #sets saveattributes
         s = SaveWindowAttributes()
         s.format = s.PNG
+        # s.SetPixelData(2) # Transparent background
         s.outputToCurrentDirectory = 1
         s.fileName = saveFolder
 
@@ -408,10 +409,10 @@ def PlotBH(database, idx, indx, ref=1):
 
         SetPlotOptions(Pseudo)
 
-plot_box = True
+plot_box = False
 def PlotBox():
         # Hardcoded path to your .3d file
-        file_path = "/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/line.3d" #"/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/cube_edges.3d"
+        file_path = "/anvil/scratch/x-yguo11/bhdisk_sol_32/h5data/box.3d" #"/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/cube_edges.3d"
 
         # Open the database
         ActivateDatabase(file_path)
@@ -980,7 +981,7 @@ class VisitPlot:
                 tcur = self.timeTXT[state][5:-4]
                 print("t/M = {}".format(int(float(tcur))))
                 self.txt.text = "t/M = {}".format(int(float(tcur)))
-                #self.txt.text = ""
+                # self.txt.text = ""
 
                 self.LoadAttr(view, "myView")
 
@@ -1052,7 +1053,8 @@ class VisitPlot:
                         SetActivePlots(self.idx("density"))
                         SetPlotOptions(self.rho_atts)
                         iso(self.rho_isoXML)
-                        reflect()
+                        if self.cutPlot:   # reflect() only in cut mode; in nocut it doubles the
+                            reflect()      # full 21-shell surface and overflows/crashes the VisIt engine
                         print("pseudocolor set")
                         if self.cutPlot: 
                             #pass
