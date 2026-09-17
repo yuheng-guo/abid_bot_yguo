@@ -7,10 +7,10 @@ else
 fi
 
 #option to reduce number of folders images
-all=false                      #Runs all folders if true, if false will run from
-firstFolder=1         # TODO(sol_05): set once data is extracted
-lastFolder=1          # TODO(sol_05): set once data is extracted
-framesPerRun=15
+all=true                       #Runs all folders if true, if false will run from
+firstFolder=1         # unused while all=true
+lastFolder=54         # unused while all=true
+framesPerRun=76   # 1212 frames / 16 = 16 balanced jobs, one full wave at maxParallel=16
 
 
 
