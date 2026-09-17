@@ -43,26 +43,9 @@ M="0.0564177477296656"
 #			integer, and that is the offset. Alternatively, you can look at the very 
 #			first iteration number of the h5 data, and divide it by the iteration step, 
 #			"it". 
-# !! DO NOT RUN setup.sh IN THIS TREE WITHOUT READING THIS !!
-# offset=0 is correct here ONLY because bin/bw_many_folder_scripts/overlap.txt
-# is stale: it still lists all 218 folders from December 2025, of which only the
-# last 49 remain in h5data/. setmovie.py walks that file sequentially, so those
-# 169 dead rows are what carry the frame index up to 4012 before the first
-# surviving folder -- which is why the labels come out right.
-#
-# setup.sh -> setup_frames.sh -> cray.sh -> movieSeq_v2_arg.bash begins with
-# "rm -f overlap.txt" and rebuilds it from the 49 folders actually in h5data/.
-# The moment that happens, offset=0 means frame 0 and every label in this tree
-# drops by 4012 frames (first frame would read t/M ~ 0 instead of 7804.99).
-#
-# If you re-run setup.sh here, set offset=4012 (= first h5 timestep 2054144 / it
-# 512) at the same time. A copy of the current file is kept beside it as
-# overlap.txt.218folders.backup if you would rather restore than re-derive.
-#
-# Note also: this tree keeps dt=0.1097556941 by explicit decision so earlier
-# renderings stay comparable. The h5 "time" attribute implies dt=0.11264, so
-# every label here reads about 2.6% low in absolute terms -- 7804.99 where the
-# data says 8010.81. Self-consistent, deliberately not corrected.
+# !! offset=0 here is load-bearing on a stale overlap.txt -- see the long
+# note above offset= in `params`. Re-running setup.sh in this tree without
+# setting offset=4012 shifts every t/M label by 4012 frames.
 offset=0
 
 
@@ -101,7 +84,7 @@ rho_isoXML=$root/bin/bw_many_folder_scripts/atts/bhdisk_iso_21_shells.xml
 #rho_isoXML=$root/bin/bw_many_folder_scripts/atts/bsq2r_iso_test.xml
 # view1XML:		The full path to the view attribute xml file. This is usually placed in 
 # view2XML:		"bin/bw_many_folder_scripts/atts/".
-view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_30deg_zoomin.xml  #bhdisk_view_30deg.xml #bhdisk_view_equatorial.xml
+view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_30deg_superzoomin.xml  #run 2: cut + superzoomin
 view2XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_reg.xml
 #####################################################################
 
