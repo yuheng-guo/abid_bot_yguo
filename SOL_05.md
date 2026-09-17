@@ -1,21 +1,23 @@
 # sol_05 setup
 
-Copy of the riemann-ported sol_32 pipeline
-(`/data/yuhengguo/bhdisk_sol_32/abid_bot`, branch `bhdisk_sol_32`), retargeted
-at sol_05. Git branch here is **`bhdisk_sol_05`**; same remote
-(`git@github.com:yuheng-guo/abid_bot_yguo.git`). See `RIEMANN.md` for the
-riemann port itself -- everything there applies unchanged.
+The riemann-ported visualization pipeline, retargeted at sol_05. Git branch
+here is **`bhdisk_sol_05_riemann`**, remote
+`git@github.com:yuheng-guo/abid_bot_yguo.git`. See `RIEMANN.md` for the riemann
+port itself -- everything there applies unchanged -- and `../STRUCTURE.md` for
+how this folder is laid out.
 
-The directory is `abid_bot_disk/`, not `abid_bot/`, because
-`/data/yuhengguo/bhdisk_sol_05/abid_bot` is already the
-Illinois-Relativity-Group GW repo (branch `yguo/gw-multi-radius`) and is in
-active use. Naming follows `/data/wiwang3/abid_bot_disk_bhdisk_B3`.
+This directory is `abid-bot/` because it generates images. Gravitational-wave
+generation lives in a separate tree, `../gw-generation/`, on the
+Illinois-Relativity-Group repo (branch `yguo/gw-multi-radius`). The two are
+named apart on purpose: they share an ancestor but do unrelated work, and for a
+while both were called `abid_bot`, which meant the same name referred to the
+visualization tree in `bhdisk_sol_32` and the GW tree here.
 
 ## What was retargeted
 
 | setting | value |
 |---|---|
-| `root` | `/data/yuhengguo/bhdisk_sol_05/abid_bot_disk` |
+| `root` | `/data/yuhengguo/bhdisk_sol_05/abid-bot` |
 | `h5src` | `/data/yuhengguo/bhdisk_sol_05/hdf5/h5_extracted` |
 | `M` (ADM mass) | **`0.0590833070753691`** (sol_32 was `0.0564177477296656`) |
 | `maxdensity` | **`0.000461833107670726`** (sol_32 was `0.000223625890017604`) |
@@ -55,7 +57,7 @@ first iteration number in the first `3d_data_*` folder once the data is out.
 
 ## Order of operations once the tars are complete
 
-    cd /data/yuhengguo/bhdisk_sol_05/abid_bot_disk
+    cd /data/yuhengguo/bhdisk_sol_05/abid-bot
     # 1. extract tars into hdf5/h5_extracted/
     # 2. confirm firstTime/offset against the first iteration number
     . params
