@@ -73,7 +73,7 @@ for rank in `seq 0 $(( $totranks - 1 ))`; do
 	jobfile=$logfolder/job/job$job_num.sh
 	
 	
-	echo visit -forceversion 3.1.4 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2rAsVol $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML $PlotSpinVec $spinvecXML $vec2XML $bsq_pseudoXML $bsq_isoXML $PlotBsq2rAsIso $PlotVelCustom $VelCustomFile $idx $totframes $view1XML $vol1XML $view2XML $vol2XML >> $jobfile
+	echo visit -forceversion 3.3.3 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2rAsVol $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML $PlotSpinVec $spinvecXML $vec2XML $bsq_pseudoXML $bsq_isoXML $PlotBsq2rAsIso $PlotVelCustom $VelCustomFile $idx $totframes $view1XML $vol1XML $view2XML $vol2XML >> $jobfile
 	frame_count=$((frame_count+1))
        	if [[ "$frame_count" -ge "$framesPerRun" ]]; then
         	frame_count=0
@@ -82,14 +82,18 @@ for rank in `seq 0 $(( $totranks - 1 ))`; do
 done
 
 totjobs=$(ls $logfolder/job/* | wc -l)
-templatefile=$root/bin/scheduler/multirun_template_anvil
+templatefile=$root/bin/scheduler/multirun_template_riemann
 for ((c=0; c<$totjobs; c++)); do
-		# . job$c.sh
         runfile=$logfolder/run/run$c.sh
-        cat $templatefile $logfolder/job/job$c.sh >> $logfolder/run/run$c.sh
-        echo "submitting job $c"
-        sbatch $logfolder/run/run$c.sh
+        cat $templatefile $logfolder/job/job$c.sh >> $runfile
+        chmod +x $runfile
 done
+
+# riemann: no batch scheduler and no compute nodes -- run the job scripts here,
+# $maxParallel at a time. Each job's stdout/stderr goes to run<c>.sh.out.
+echo "running $totjobs jobs locally, $maxParallel at a time"
+ls $logfolder/run/run*.sh | sort -V | \
+        xargs -P $maxParallel -I{} bash -c 'bash "$1" > "$1".out 2>&1; echo "finished $(basename "$1")"' _ {}
 echo " done"
 cd $root
 

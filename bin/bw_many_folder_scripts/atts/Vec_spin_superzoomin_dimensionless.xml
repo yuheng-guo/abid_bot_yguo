@@ -12,6 +12,7 @@
     <Field name="headSize" type="double">0.3</Field>
     <Field name="headOn" type="bool">true</Field>
     <Field name="colorByMag" type="bool">false</Field>
+    <Field name="colorByMagnitude" type="bool">false</Field>
     <Field name="useLegend" type="bool">false</Field>
     <Object name="vectorColor">
         <Object name="ColorAttribute">

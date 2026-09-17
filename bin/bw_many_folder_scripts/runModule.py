@@ -351,7 +351,15 @@ def getLists(extrasDir, numBfieldPlots=1):
         for fileName in fileNames1:
                 tmp = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and\
                                 f.find(fileName)  != -1 ]
-                tmp.sort()
+                if fileName == "time_":
+                        # numeric, not lexicographic: "{:07.2f}" pads to 4 integer
+                        # digits, so at t/M >= 10000 the names stop being equal
+                        # width and "time_10000.43.txt" < "time_9998.29.txt".
+                        # SetAtts() indexes this list numerically, so a string
+                        # sort rotates it -- wrong t/M, wrong CoM, wrong spin.
+                        tmp.sort(key=lambda f: float(f[5:-4]))
+                else:
+                        tmp.sort()
                 xmls.append(tmp)
         for filetuple in fileNames2:
                 fileName = filetuple[0]
@@ -400,7 +408,11 @@ def PlotBH(database, idx, indx, ref=1):
 
         Pseudo = PseudocolorAttributes()
         SetActivePlots(indx)
-        AddOperator("Delaunay")
+        # riemann/VisIt 3.3.3: the Delaunay operator ships disabled by default
+        # ("Skipping disabled operator plugin Delaunay") and visit -cli has no
+        # API to enable it, so AddOperator("Delaunay") raises
+        # "Invalid operator plugin name". The horizon renders fine without it.
+        #AddOperator("Delaunay")
         #if ref:
         #        reflect()
         Pseudo.colorTableName = "gray"
@@ -411,8 +423,15 @@ def PlotBH(database, idx, indx, ref=1):
 
 plot_box = False
 def PlotBox():
-        # Hardcoded path to your .3d file
-        file_path = "/anvil/scratch/x-yguo11/bhdisk_sol_32/h5data/box.3d" #"/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/cube_edges.3d"
+        # riemann: was hardcoded to the anvil path; take $root from the environment
+        import os
+        root = os.environ.get("root", "")
+        if not root:
+                print("PlotBox: $root is not set in the environment -- "
+                      "source params before running. Skipping box plot.")
+                return
+        file_path = os.path.join(root, "h5data", "box.3d")
+        # alternative geometry: os.path.join(root, "h5data", "cube_edges.3d")
 
         # Open the database
         ActivateDatabase(file_path)
@@ -981,7 +1000,11 @@ class VisitPlot:
                 tcur = self.timeTXT[state][5:-4]
                 print("t/M = {}".format(int(float(tcur))))
                 self.txt.text = "t/M = {}".format(int(float(tcur)))
-                # self.txt.text = ""
+                # set NO_TIME_LABEL=1 in the environment to render without the
+                # t/M caption (for stills / publication figures)
+                import os as _os
+                if _os.environ.get("NO_TIME_LABEL"):
+                        self.txt.text = ""
 
                 self.LoadAttr(view, "myView")
 

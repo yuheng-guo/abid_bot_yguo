@@ -1,4 +1,5 @@
-module load visit/3.1.4
+# riemann: VisIt 3.3.3 is installed system-wide, no module system
+export PATH=/data/shared/visit/bin:$PATH
 
 if [[ -f "params$1" ]];then
         echo "using params$1"
@@ -28,7 +29,7 @@ h5prefix=3d_data_
 
 ########run movies variables
 
-pbsfile=$root/bin/bw_many_folder_scripts/singleRun_anvil_frames.pbs
+# pbsfile: unused on riemann (no batch scheduler); the .pbs file is not in this branch
 picsavedir=$root/movies
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/run.py
@@ -93,7 +94,7 @@ ranknum=(0)
 
 count=1
 DATE=$(date +%y%m%d_%H%M)
-picsavefolder=$picsavedir/"$jobName"; mkdir -p $picsavefolder
+picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder
 #picsavefolder=$picsavedir/"$jobName"; mkdir -p $picsavefolder		#if you don't want date&time in folder name
 logfolder=$logdir/"$DATE"_"$jobName"; mkdir -p $logfolder
 
@@ -109,7 +110,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			    if [[ " ${ranknum[@]} " =~ " ${rank} " ]]; then
 		        	echo submitting job $count with rank = $rank
-				visit -cli -nowin -forceversion 3.1.4 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2rAsVol $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML $PlotSpinVec $spinvecXML $vec2XML $bsq_pseudoXML $bsq_isoXML $PlotBsq2rAsIso $PlotCustomVel $VelCustomFile	
+				visit -cli -nowin -forceversion 3.3.3 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2rAsVol $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML $PlotSpinVec $spinvecXML $vec2XML $bsq_pseudoXML $bsq_isoXML $PlotBsq2rAsIso $PlotCustomVel $VelCustomFile	
 			    fi
 		done
 	fi

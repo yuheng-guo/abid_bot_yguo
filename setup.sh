@@ -26,7 +26,8 @@
 #include that case. This is mainly done through "if" statements and such.
 
 # Remember to run params, then bin/link_h5data.sh to set up your data folders
-module load python
+# riemann: no module system; system python3 is used
+# module load python
 
 setN=$1
 

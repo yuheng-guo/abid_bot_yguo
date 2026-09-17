@@ -14,7 +14,7 @@ framesPerRun=15
 
 
 
-jobName=bhdisk_sol32_gw_disk_composite
+jobName=bhdisk_sol32_cut_superzoomin
 h5dir=$root/h5data
 extrasDir=$root/xml$1
 h5prefix=3d_data_
@@ -45,7 +45,7 @@ PlotBsq2rAsVol=0 # Plot B squared over 2 rho in a volume plot
 PlotBsq2rAsIso=0 # Plot B squared over 2 rho in a pseudocolor plot as isosurfaces
 Plotg00=0 # Plot g00 from metric
 refPlot=0 # Reflect plot over xy plane
-cutPlot=0 # only show back half (y>0), needs view like: (0,-x,y)
+cutPlot=1 # only show back half (y>0), needs view like: (0,-x,y)
 bgcolor="blue" #background color
 
 

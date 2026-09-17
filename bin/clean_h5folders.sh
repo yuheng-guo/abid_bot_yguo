@@ -11,9 +11,15 @@ fi
 
 for i in $(ls -d 3d_data*)
 do
-	if [ $(ls $i | wc -l) -eq 0 ]
+	# A folder is unusable if it has no *.h5, not merely if it is empty:
+	# restart folders often contain only CCTK_Proc1.out, which slips past a
+	# file-count test, renders no frames, and still consumes a folder index.
+	if ! ls $i/*.h5 >/dev/null 2>&1
 	then
-		mv $i $bad_data/$i
+		# -T so an existing bad_data/$i symlink is replaced, not descended
+		# into (that produced self-referential links inside the data dirs).
+		rm -rf $bad_data/$i
+		mv -T $i $bad_data/$i
 	fi
 done
 cd $cur
