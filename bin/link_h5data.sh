@@ -100,6 +100,9 @@ echo "renamed $renamed folders to 3d_data_*"
 # moves them back. If the data has since arrived, drop the stale entry so the
 # folder gets linked normally again.
 if [ -d "$h5data/bad_data" ]; then
+	# top level only: bad_data/duplicates/ is rmdupes.py's, and those
+	# folders DO have .h5 in $h5src, so releasing them would bring the
+	# duplicate frames straight back.
 	for l in "$h5data"/bad_data/3d_data_*; do
 		[ -e "$l" ] || [ -L "$l" ] || continue
 		b=$(basename -- "$l")
@@ -107,8 +110,14 @@ if [ -d "$h5data/bad_data" ]; then
 		# can hold only CCTK_Proc1.out and would otherwise be released,
 		# occupy a folder index and render nothing.
 		if ls "$h5src/$b"/*.h5 >/dev/null 2>&1; then
-			rm -rf -- "$l"
-			echo "	$b has data again, released from bad_data"
+			if [ ! -L "$l" ]; then
+				# a real directory here is data somebody moved in, not a
+				# link we made. Never rm -rf it.
+				echo "	$b: bad_data holds a real directory, not a link -- left alone"
+			else
+				rm -f -- "$l"
+				echo "	$b has data again, released from bad_data"
+			fi
 		fi
 	done
 fi
