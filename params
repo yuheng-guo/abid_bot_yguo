@@ -43,26 +43,21 @@ M="0.0564177477296656"
 #			integer, and that is the offset. Alternatively, you can look at the very 
 #			first iteration number of the h5 data, and divide it by the iteration step, 
 #			"it". 
-# !! DO NOT RUN setup.sh IN THIS TREE WITHOUT READING THIS !!
-# offset=0 is correct here ONLY because bin/bw_many_folder_scripts/overlap.txt
-# is stale: it still lists all 218 folders from December 2025, of which only the
-# last 49 remain in h5data/. setmovie.py walks that file sequentially, so those
-# 169 dead rows are what carry the frame index up to 4012 before the first
-# surviving folder -- which is why the labels come out right.
+# offset:		first h5 iteration / it. This case now has its full history in
+#			hdf5/h5_extracted -- 225 folders back to 25_12_08, whose first
+#			timestep is 0 -- so offset=0 is simply correct and no longer
+#			depends on anything else.
 #
-# setup.sh -> setup_frames.sh -> cray.sh -> movieSeq_v2_arg.bash begins with
-# "rm -f overlap.txt" and rebuilds it from the 49 folders actually in h5data/.
-# The moment that happens, offset=0 means frame 0 and every label in this tree
-# drops by 4012 frames (first frame would read t/M ~ 0 instead of 7804.99).
+#			It used to: only 49 folders were present and offset=0 worked
+#			only because overlap.txt still listed the 169 missing December
+#			ones, which carried the frame index to 4012. That trap is gone
+#			now that the data itself starts at iteration 0. The old file is
+#			kept as overlap.txt.218folders.backup; nothing needs it.
 #
-# If you re-run setup.sh here, set offset=4012 (= first h5 timestep 2054144 / it
-# 512) at the same time. A copy of the current file is kept beside it as
-# overlap.txt.218folders.backup if you would rather restore than re-derive.
-#
-# Note also: this tree keeps dt=0.1097556941 by explicit decision so earlier
-# renderings stay comparable. The h5 "time" attribute implies dt=0.11264, so
-# every label here reads about 2.6% low in absolute terms -- 7804.99 where the
-# data says 8010.81. Self-consistent, deliberately not corrected.
+#			Note this tree keeps dt=0.1097556941 by explicit decision so
+#			earlier renderings stay comparable. The h5 "time" attribute
+#			implies dt=0.11264, so labels here read about 2.6% low in
+#			absolute terms. Self-consistent, deliberately not corrected.
 offset=0
 
 
