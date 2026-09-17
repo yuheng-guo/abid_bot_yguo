@@ -6,7 +6,7 @@
 # module load python
 
 # root:			The full path to abid_bot (so it should end with abid_bot) 
-root="/data/yuhengguo/bhdisk_sol_32/abid_bot"
+root="/data/yuhengguo/bhdisk_sol_32/abid-bot"
 export root   # riemann: runModule.py PlotBox() reads $root instead of a hardcoded path
 
 # riemann: VisIt 3.3.3 lives here, no module system

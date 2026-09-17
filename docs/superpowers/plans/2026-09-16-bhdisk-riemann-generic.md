@@ -26,7 +26,7 @@
 - No generated file is ever committed: `xml*/ movies/ log/ bhdata/ cm.txt visitlog.py xml_log.txt __pycache__/ *.pyc *.tar.gz h5data/3d_data_* h5data/bad_data/`.
 - VisIt attribute XML files must not contain XML comments — a single comment blanks the file to defaults.
 - Every `visit -cli` invocation redirects `< /dev/null`, or a script exception hangs forever at an interactive prompt.
-- Build workspace: `/data/yuhengguo/abid_bot_riemann_build`. Source tree for seeding: `/data/yuhengguo/bhdisk_sol_32/abid_bot`.
+- Build workspace: `/data/yuhengguo/abid_bot_riemann_build`. Source tree for seeding: `/data/yuhengguo/bhdisk_sol_32/abid-bot`.
 
 ---
 
@@ -117,7 +117,7 @@ Expected: exactly one commit, no parent.
 ### Task 2: Assemble the code tree
 
 **Files:**
-- Create: `bin/` (from `/data/yuhengguo/bhdisk_sol_32/abid_bot/bin`, minus generated files)
+- Create: `bin/` (from `/data/yuhengguo/bhdisk_sol_32/abid-bot/bin`, minus generated files)
 - Create: `setup.sh`, `setup_params.py`, `change_view.py`
 - Create: `h5data/cube_edges.3d`, `h5data/cube_edges_old.3d`, `h5data/line.3d`, `h5data/box.3d`, `h5data/makebox.py`, `h5data/make_line.py`
 
@@ -137,7 +137,7 @@ rsync -a \
   --exclude 'runModule copy.py' --exclude 'runModule_functioning.py' \
   --exclude 'clean_h5folders.sh.orig' \
   --exclude 'multirun_template_anvil' \
-  /data/yuhengguo/bhdisk_sol_32/abid_bot/bin/ bin/
+  /data/yuhengguo/bhdisk_sol_32/abid-bot/bin/ bin/
 ls bin/ bin/scheduler/
 ```
 
@@ -147,7 +147,7 @@ Expected: `bin/scheduler/` contains only `multirun_template_riemann`.
 
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
-S=/data/yuhengguo/bhdisk_sol_32/abid_bot
+S=/data/yuhengguo/bhdisk_sol_32/abid-bot
 cp $S/setup.sh $S/setup_params.py $S/change_view.py .
 cp $S/compute_spinvec_start.ipynb $S/copy_seeds.py $S/copy_seeds_2.py \
    $S/del_bh.py $S/reference_seed_maker.py $S/copy_data.sh .
@@ -159,9 +159,9 @@ ls
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
 mkdir -p h5data
-A=/data/yuhengguo/bhdisk_sol_05/abid_bot/abid_bot_bhdisk/bhdisk_anvil/h5data
+A=/data/yuhengguo/bhdisk_sol_05/gw-generation/abid_bot_bhdisk/bhdisk_anvil/h5data
 cp $A/cube_edges.3d $A/cube_edges_old.3d $A/line.3d $A/makebox.py $A/make_line.py h5data/
-cp /data/yuhengguo/bhdisk_sol_32/abid_bot/h5data/box.3d h5data/
+cp /data/yuhengguo/bhdisk_sol_32/abid-bot/h5data/box.3d h5data/
 ls h5data/
 ```
 
@@ -214,7 +214,7 @@ h5data/ ships only the geometry files bhdisk_anvil ships. Users populate
 ### Task 3: Generify params
 
 **Files:**
-- Create: `params` (from `/data/yuhengguo/bhdisk_sol_32/abid_bot/params`, values reset)
+- Create: `params` (from `/data/yuhengguo/bhdisk_sol_32/abid-bot/params`, values reset)
 
 **Interfaces:**
 - Consumes: Task 2's tree.
@@ -224,7 +224,7 @@ h5data/ ships only the geometry files bhdisk_anvil ships. Users populate
 
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
-cp /data/yuhengguo/bhdisk_sol_32/abid_bot/params params
+cp /data/yuhengguo/bhdisk_sol_32/abid-bot/params params
 sed -i \
   -e 's|^root=.*|root="/CHANGE/ME/abid_bot"|' \
   -e 's|^h5src=.*|h5src=""   # optional; only used by h5data/link_h5data.sh|' \
@@ -313,7 +313,7 @@ Expected: `root=/CHANGE/ME/abid_bot`, `h5src=[]`, `cutNormal=0,-1,0 showTimeLabe
 
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
-A=/data/yuhengguo/bhdisk_sol_05/abid_bot/abid_bot_bhdisk/bhdisk_anvil/params
+A=/data/yuhengguo/bhdisk_sol_05/gw-generation/abid_bot_bhdisk/bhdisk_anvil/params
 diff <(grep -oE '^[a-zA-Z_][a-zA-Z_0-9]*=' $A) <(grep -oE '^[a-zA-Z_][a-zA-Z_0-9]*=' params)
 ```
 
@@ -659,7 +659,7 @@ cd /data/yuhengguo/abid_bot_riemann_build
 rm -rf /tmp/sp_test && mkdir -p /tmp/sp_test
 cp params /tmp/sp_test/params
 cp setup_params.py /tmp/sp_test/
-ln -s /data/yuhengguo/bhdisk_sol_05/abid_bot_disk/h5data /tmp/sp_test/h5data
+ln -s /data/yuhengguo/bhdisk_sol_05/abid-bot/h5data /tmp/sp_test/h5data
 cd /tmp/sp_test && python3 setup_params.py
 grep -E '^it=|^dt=|^offset=|^firstTime=|^maxdensity=|^M=' params
 ```
@@ -861,8 +861,8 @@ link itself."
 
 **Files:**
 - Create: `runSingle.sh` (from `bhdisk_frontera/runSingle.sh`)
-- Create: `runLocal.sh` (from `/data/yuhengguo/bhdisk_sol_32/abid_bot/runLocal.sh`)
-- Create: `runMulti.sh` (from `/data/yuhengguo/bhdisk_sol_32/abid_bot/runMulti.sh`)
+- Create: `runLocal.sh` (from `/data/yuhengguo/bhdisk_sol_32/abid-bot/runLocal.sh`)
+- Create: `runMulti.sh` (from `/data/yuhengguo/bhdisk_sol_32/abid-bot/runMulti.sh`)
 - Create: `runMisc.sh` (from `bhdisk_anvil/runMisc.sh`)
 
 **Interfaces:**
@@ -873,7 +873,7 @@ link itself."
 
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
-S=/data/yuhengguo/bhdisk_sol_32/abid_bot
+S=/data/yuhengguo/bhdisk_sol_32/abid-bot
 cp $S/runLocal.sh $S/runMulti.sh .
 sed -i -e 's|^jobName=.*|jobName=my_case_test|' \
        -e 's|^cutPlot=.*|cutPlot=1 # only show back half; set cutNormal in params|' \
@@ -890,7 +890,7 @@ grep -nE '^jobName=|^cutPlot=|^foldernum=|^ranknum=|^firstFolder=|^lastFolder=' 
 
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
-F=/data/yuhengguo/bhdisk_sol_05/abid_bot/abid_bot_bhdisk/bhdisk_frontera
+F=/data/yuhengguo/bhdisk_sol_05/gw-generation/abid_bot_bhdisk/bhdisk_frontera
 cp $F/runSingle.sh .
 python3 - <<'PY'
 import re
@@ -922,7 +922,7 @@ grep -nE 'sbatch|module load|3\.1\.4' runSingle.sh || echo "no sbatch / module l
 
 ```bash
 cd /data/yuhengguo/abid_bot_riemann_build
-cp /data/yuhengguo/bhdisk_sol_05/abid_bot/abid_bot_bhdisk/bhdisk_anvil/runMisc.sh .
+cp /data/yuhengguo/bhdisk_sol_05/gw-generation/abid_bot_bhdisk/bhdisk_anvil/runMisc.sh .
 python3 - <<'PY'
 import re
 p='runMisc.sh'; t=open(p).read()
@@ -1264,7 +1264,7 @@ forced and the bugs fixed on the way."
 - No repo files change. Creates and destroys `/tmp/riemann_verify_{32,05}/`.
 
 **Interfaces:**
-- Consumes: the finished branch, and the two populated case trees at `/data/yuhengguo/bhdisk_sol_32/abid_bot/h5data` and `/data/yuhengguo/bhdisk_sol_05/abid_bot_disk/h5data`.
+- Consumes: the finished branch, and the two populated case trees at `/data/yuhengguo/bhdisk_sol_32/abid-bot/h5data` and `/data/yuhengguo/bhdisk_sol_05/abid-bot/h5data`.
 - Produces: two rendered PNGs proving case-independence. Gate for Task 11.
 
 - [ ] **Step 1: Clone the branch into a clean directory and point it at sol_05**
@@ -1276,7 +1276,7 @@ git clone -b yguo/bhdisk-riemann --single-branch \
 cd /tmp/riemann_verify_05
 rmdir h5data 2>/dev/null; rm -rf h5data
 cp -r /data/yuhengguo/abid_bot_riemann_build/h5data h5data
-for d in /data/yuhengguo/bhdisk_sol_05/abid_bot_disk/h5data/*; do
+for d in /data/yuhengguo/bhdisk_sol_05/abid-bot/h5data/*; do
   b=$(basename -- "$d"); [ -e "h5data/$b" ] || ln -sfn -- "$d" "h5data/$b"
 done
 sed -i 's|^root=.*|root="/tmp/riemann_verify_05"|' params
@@ -1326,7 +1326,7 @@ git clone -b yguo/bhdisk-riemann --single-branch \
   /data/yuhengguo/abid_bot_riemann_build /tmp/riemann_verify_32
 cd /tmp/riemann_verify_32
 rm -rf h5data; cp -r /data/yuhengguo/abid_bot_riemann_build/h5data h5data
-for d in /data/yuhengguo/bhdisk_sol_32/abid_bot/h5data/*; do
+for d in /data/yuhengguo/bhdisk_sol_32/abid-bot/h5data/*; do
   b=$(basename -- "$d"); [ -e "h5data/$b" ] || ln -sfn -- "$d" "h5data/$b"
 done
 sed -i -e 's|^root=.*|root="/tmp/riemann_verify_32"|' \
@@ -1368,7 +1368,7 @@ Keep both until reviewed. Do not proceed to Task 11 if either failed.
 ### Task 11: Push the branch and attach the two case trees
 
 **Files:**
-- Modify: git remotes in `/data/yuhengguo/bhdisk_sol_32/abid_bot` and `/data/yuhengguo/bhdisk_sol_05/abid_bot_disk`
+- Modify: git remotes in `/data/yuhengguo/bhdisk_sol_32/abid-bot` and `/data/yuhengguo/bhdisk_sol_05/abid-bot`
 
 **Interfaces:**
 - Consumes: the verified branch from Task 10.
@@ -1416,7 +1416,7 @@ Expected: the tool at the root, no archive directories, a small clone.
 - [ ] **Step 4: Attach the two case trees as a second remote**
 
 ```bash
-for d in /data/yuhengguo/bhdisk_sol_32/abid_bot /data/yuhengguo/bhdisk_sol_05/abid_bot_disk; do
+for d in /data/yuhengguo/bhdisk_sol_32/abid-bot /data/yuhengguo/bhdisk_sol_05/abid-bot; do
   cd $d
   git remote get-url group >/dev/null 2>&1 || \
     git remote add group git@github.com:Illinois-Relativity-Group/abid_bot.git
@@ -1430,7 +1430,7 @@ Expected: both trees list a `group` remote and have fetched the branch. Neither 
 - [ ] **Step 5: Confirm the case trees are undisturbed**
 
 ```bash
-for d in /data/yuhengguo/bhdisk_sol_32/abid_bot /data/yuhengguo/bhdisk_sol_05/abid_bot_disk; do
+for d in /data/yuhengguo/bhdisk_sol_32/abid-bot /data/yuhengguo/bhdisk_sol_05/abid-bot; do
   cd $d
   echo "$d: branch=$(git branch --show-current) dirty=$(git status --porcelain | wc -l)"
   grep -H '^M=' params
@@ -1502,7 +1502,7 @@ bad = check(d, times, "synthetic straddling 10000")
 # --- real production folder with known ground truth ---
 # bhdisk_sol_32's last folder: 3 four-digit + 20 five-digit names, and every
 # one of its 23 frames is mislabelled by the unpatched code.
-real = '/data/yuhengguo/bhdisk_sol_32/abid_bot/xml/3d_data_26_07_31_002850'
+real = '/data/yuhengguo/bhdisk_sol_32/abid-bot/xml/3d_data_26_07_31_002850'
 if os.path.isdir(real):
     rt = [f for f in os.listdir(real)
           if os.path.isfile(os.path.join(real, f)) and 'time_' in f]
