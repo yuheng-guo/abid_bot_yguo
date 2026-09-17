@@ -22,7 +22,7 @@ fi
 
 
 # jobName=04_no_Bfields
-jobName=bhdisk_sol05_zoomin_test
+jobName=bhdisk_sol05_cut_superzoomin_test
 h5dir=$root/h5data
 extrasDir=$root/xml$1
 h5prefix=3d_data_
@@ -52,7 +52,7 @@ PlotBsq2rAsVol=0 # Plot B squared over 2 rho in a volume plot
 PlotBsq2rAsIso=0 # Plot B squared over 2 rho in a pseudocolor plot as isosurfaces
 Plotg00=0 # Plot g00 from metric
 refPlot=0 # Reflect plot over xy plane
-cutPlot=0 # only show back half (y>0), needs view like: (0,-x,y)
+cutPlot=1 # only show back half (y>0), needs view like: (0,-x,y)
 bgcolor="blue" #background color
 
 PlotCustomVel=0
@@ -65,8 +65,8 @@ PlotFlyAround=0
 
 #run folder
 
-foldernum=(1)     # 3d_data_26_06_01_041407 -- first folder
-ranknum=(0)       # first frame, t/M 7443.58
+foldernum=(1)     # TODO(sol_05): set once data is extracted & setup.sh has run
+ranknum=(0)       # TODO(sol_05): set once data is extracted
 
 # foldernum=(15)
 # ranknum=(47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76)

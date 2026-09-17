@@ -278,9 +278,9 @@ def setAnnotations(lightlist=[]):#sets background, sets up text
 def setSave(saveFolder): #sets saveattributes
         s = SaveWindowAttributes()
         s.format = s.PNG
+        # s.SetPixelData(2) # Transparent background
         s.outputToCurrentDirectory = 1
         s.fileName = saveFolder
-        s.SetPixelData(2) # Transparent background
 
         s.width = 1920
         s.height = 1080
@@ -352,14 +352,14 @@ def getLists(extrasDir, numBfieldPlots=1):
                 tmp = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and\
                                 f.find(fileName)  != -1 ]
                 if fileName == "time_":
-                	# numeric, not lexicographic: "{:07.2f}" pads to 4 integer digits,
-                	# so past t/M 10000 "time_10001.36.txt" sorts before
-                	# "time_9995.52.txt". SetAtts() indexes this list numerically, so
-                	# a string sort hands every frame another frame's t/M, centre of
-                	# mass and spin.
-                	tmp.sort(key=lambda f: float(f[5:-4]))
+                        # numeric, not lexicographic: "{:07.2f}" pads to 4 integer
+                        # digits, so at t/M >= 10000 the names stop being equal
+                        # width and "time_10000.43.txt" < "time_9998.29.txt".
+                        # SetAtts() indexes this list numerically, so a string
+                        # sort rotates it -- wrong t/M, wrong CoM, wrong spin.
+                        tmp.sort(key=lambda f: float(f[5:-4]))
                 else:
-                	tmp.sort()
+                        tmp.sort()
                 xmls.append(tmp)
         for filetuple in fileNames2:
                 fileName = filetuple[0]
@@ -408,7 +408,11 @@ def PlotBH(database, idx, indx, ref=1):
 
         Pseudo = PseudocolorAttributes()
         SetActivePlots(indx)
-        AddOperator("Delaunay")
+        # riemann/VisIt 3.3.3: the Delaunay operator ships disabled by default
+        # ("Skipping disabled operator plugin Delaunay") and visit -cli has no
+        # API to enable it, so AddOperator("Delaunay") raises
+        # "Invalid operator plugin name". The horizon renders fine without it.
+        #AddOperator("Delaunay")
         #if ref:
         #        reflect()
         Pseudo.colorTableName = "gray"
@@ -419,8 +423,15 @@ def PlotBH(database, idx, indx, ref=1):
 
 plot_box = False
 def PlotBox():
-        # Hardcoded path to your .3d file
-        file_path = "/anvil/scratch/x-yguo11/bhdisk_sol_05/h5data/line.3d" #"/anvil/scratch/x-colson1/abid_bot_sol_01_v2/h5data/cube_edges.3d"
+        # riemann: was hardcoded to the anvil path; take $root from the environment
+        import os
+        root = os.environ.get("root", "")
+        if not root:
+                print("PlotBox: $root is not set in the environment -- "
+                      "source params before running. Skipping box plot.")
+                return
+        file_path = os.path.join(root, "h5data", "box.3d")
+        # alternative geometry: os.path.join(root, "h5data", "cube_edges.3d")
 
         # Open the database
         ActivateDatabase(file_path)
@@ -987,9 +998,13 @@ class VisitPlot:
                 print("Loading state {}".format(state))
                 SetTimeSliderState(frame) #if statelist is [3,4,5], frame=3(h5data) and state=0(xml list).
                 tcur = self.timeTXT[state][5:-4]
-                print("t/M = {}".format(int(float(tcur)))) # comment out to remove t/M
+                print("t/M = {}".format(int(float(tcur))))
                 self.txt.text = "t/M = {}".format(int(float(tcur)))
-                self.txt.text = ""
+                # set NO_TIME_LABEL=1 in the environment to render without the
+                # t/M caption (for stills / publication figures)
+                import os as _os
+                if _os.environ.get("NO_TIME_LABEL"):
+                        self.txt.text = ""
 
                 self.LoadAttr(view, "myView")
 
@@ -1064,13 +1079,12 @@ class VisitPlot:
                         if self.cutPlot:   # reflect() only in cut mode; in nocut it doubles the
                             reflect()      # full 21-shell surface and overflows/crashes the VisIt engine
                         print("pseudocolor set")
-                        if self.cutPlot:
+                        if self.cutPlot: 
                             #pass
                             #box(self.CoM_y, forceAddOp or frame==self.firstFrame)
                             #clip(self.CoM, self.myView.viewNormal, forceAddOp or frame==self.firstFrame)
                             print('Current View Normal for Clip Operator:', self.myView.viewNormal)
-                            # clip(self.CoM, (0.0, -1.0, 0.0), forceAddOp or frame==self.firstFrame)
-                            clip(self.CoM, (0.0, 0.0, 1.0), forceAddOp or frame==self.firstFrame)
+                            clip(self.CoM, (0.0, -1.0, 0.0), forceAddOp or frame==self.firstFrame)
                 if self.bsq2r():
                         SetActivePlots(self.idx("bsq2r"))
                         SetPlotOptions(self.bsq_atts)
