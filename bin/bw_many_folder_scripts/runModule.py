@@ -351,7 +351,15 @@ def getLists(extrasDir, numBfieldPlots=1):
         for fileName in fileNames1:
                 tmp = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and\
                                 f.find(fileName)  != -1 ]
-                tmp.sort()
+                if fileName == "time_":
+                	# numeric, not lexicographic: "{:07.2f}" pads to 4 integer digits,
+                	# so past t/M 10000 "time_10001.36.txt" sorts before
+                	# "time_9995.52.txt". SetAtts() indexes this list numerically, so
+                	# a string sort hands every frame another frame's t/M, centre of
+                	# mass and spin.
+                	tmp.sort(key=lambda f: float(f[5:-4]))
+                else:
+                	tmp.sort()
                 xmls.append(tmp)
         for filetuple in fileNames2:
                 fileName = filetuple[0]
