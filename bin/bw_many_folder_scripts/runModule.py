@@ -278,7 +278,15 @@ def setAnnotations(lightlist=[]):#sets background, sets up text
 def setSave(saveFolder): #sets saveattributes
         s = SaveWindowAttributes()
         s.format = s.PNG
-        # s.SetPixelData(2) # Transparent background
+        # TRANSPARENT_BG=1 saves RGBA instead of RGB, so the background comes out
+        # alpha-0 instead of the bgcolor. The Blender GW compositor needs this:
+        # it billboards the disk frame over the wave mesh, and an opaque
+        # background would hide the waves behind a solid rectangle.
+        # pixelData selects which buffers are captured (1=RGB, 2=RGBA); it only
+        # takes effect with screenCapture=0, which is set below.
+        import os as _os
+        if _os.environ.get("TRANSPARENT_BG"):
+                s.SetPixelData(2)
         s.outputToCurrentDirectory = 1
         s.fileName = saveFolder
 

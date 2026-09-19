@@ -75,3 +75,6 @@ __pycache__/
 
 # --- agent / tooling scratch -----------------------------------------------
 .superpowers/
+
+# pid files written by the long-running resumable render loops (render_missing*.sh)
+*.pid
